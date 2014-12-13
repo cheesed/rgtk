@@ -17,6 +17,7 @@ use std::ptr;
 
 use gtk::{mod, ffi};
 use gtk::ffi::FFIWidget;
+use gtk::cast::GTK_TEXT_BUFFER;
 
 /// GtkTextBuffer — Stores attributed text for display in a GtkTextView
 
@@ -33,6 +34,67 @@ impl TextBuffer {
 
         check_pointer!(tmp_pointer, TextBuffer)
     }
+
+    pub fn apply_tag(&self, tag: &gtk::TextTag, start: &gtk::TextIter, end: &gtk::TextIter) {
+        unsafe {
+            ffi::gtk_text_buffer_apply_tag(GTK_TEXT_BUFFER(self.get_widget()), tag.get_pointer(),
+                start.get_pointer() as *const ffi::C_GtkTextIter, end.get_pointer() as *const ffi::C_GtkTextIter);
+        };
+    }
+    
+    pub fn insert(&self, iter: &gtk::TextIter, text: &str, len: i32) {
+        unsafe { text.with_c_str(|c_str| {
+            ffi::gtk_text_buffer_insert(GTK_TEXT_BUFFER(self.get_widget()), iter.get_pointer(), c_str,len as ::libc::c_int)
+            })
+        };
+    }
+
+    pub fn create_tag(&self, tag_name: &str, one: &str, two: &str) -> gtk::TextTag {
+        let tmp_pointer = unsafe {
+            tag_name.with_c_str(|c_tag_name| {
+                one.with_c_str(|c_one| {
+                    two.with_c_str (|c_two| {
+                        ffi::gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(self.get_widget()), c_tag_name, c_one, c_two, ptr::null::<::libc::c_char>())
+                    })
+                })
+            })
+        };
+
+        gtk::TextTag::wrap_pointer(tmp_pointer)
+   }
+
+   pub fn create_tag_int(&self, tag_name: &str, one: &str, two: i32) -> gtk::TextTag {
+        let tmp_pointer = unsafe {
+            tag_name.with_c_str(|c_tag_name| {
+                one.with_c_str(|c_one| {
+                    ffi::gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(self.get_widget()), c_tag_name, c_one, two, ptr::null::<::libc::c_char>())
+                })
+            })
+        };
+
+        gtk::TextTag::wrap_pointer(tmp_pointer)
+    }
+
+   pub fn create_tag_double(&self, tag_name: &str, one: &str, two: f64) -> gtk::TextTag {
+
+        let tmp_pointer = unsafe {
+            tag_name.with_c_str(|c_tag_name| {
+                one.with_c_str(|c_one| {
+                    ffi::gtk_text_buffer_create_tag(GTK_TEXT_BUFFER(self.get_widget()), c_tag_name, c_one, two, ptr::null::<::libc::c_char>())
+                })
+            })
+        };
+
+        gtk::TextTag::wrap_pointer(tmp_pointer)
+    }
+
+
+   pub fn get_iter_at_offset(&self, iter: &gtk::TextIter, char_offset: i32) {
+        unsafe {
+            ffi::gtk_text_buffer_get_iter_at_offset(GTK_TEXT_BUFFER(self.get_widget()), iter.get_pointer(), char_offset as ::libc::c_int)
+        };
+    }
+
 }
 
 impl_drop!(TextBuffer)

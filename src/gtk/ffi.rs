@@ -2915,11 +2915,16 @@ extern "C" {
     //=========================================================================
     pub fn gtk_text_buffer_new      (text_tag_table: *mut C_GtkTextTagTable) -> *mut C_GtkWidget;
     pub fn gtk_text_buffer_set_text (buffer: *mut C_GtkTextBuffer, text: *const c_char, length: c_int);
+    pub fn gtk_text_buffer_apply_tag(buffer: *mut C_GtkTextBuffer, tag: *mut C_GtkTextTag, start: *const C_GtkTextIter, end: *const C_GtkTextIter);
+    pub fn gtk_text_buffer_insert(buffer: *mut C_GtkTextBuffer, iter: *mut C_GtkTextIter, text: *const c_char, len : c_int);
+    pub fn gtk_text_buffer_create_tag(buffer: *mut C_GtkTextBuffer, tag_name: *const c_char, first_property_name: *const c_char, ...) -> *mut C_GtkTextTag;
+    pub fn gtk_text_buffer_get_iter_at_offset(buffer: *mut C_GtkTextBuffer, iter: *mut C_GtkTextIter, char_offset : c_int);
 
     //=========================================================================
     // GtkTextTagTable                                                   NOT OK
     //=========================================================================
     pub fn gtk_text_tag_table_new   () -> *mut C_GtkTextTagTable;
+    pub fn gtk_text_tag_table_add   (text_tag_table: *mut C_GtkTextTagTable, text_tag: *mut C_GtkTextTag) -> Gboolean;
 
     //=========================================================================
     // GtkScrolledWindow                                                 NOT OK

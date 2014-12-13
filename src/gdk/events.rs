@@ -110,7 +110,7 @@ pub struct EventVisibility{
     pub window : *mut gdk::Window,
     send_event : i8,
 
-    state : gdk::VisibilityState
+    pub state : gdk::VisibilityState
 }
 
 impl Event for EventVisibility {}
@@ -120,15 +120,15 @@ pub struct EventMotion {
     pub window : *mut gdk::Window,
     send_event : i8,
 
-    time : u32,
-    x : f64,
-    y : f64,
-    axes : *mut f64,
-    state : gdk::enums::modifier_type::ModifierType,
-    is_hint : i16,
-    device : *mut gdk::Device,
-    x_root : f64,
-    y_root : f64
+    pub time : u32,
+    pub x : f64,
+    pub y : f64,
+    pub axes : *mut f64,
+    pub state : gdk::enums::modifier_type::ModifierType,
+    pub is_hint : i16,
+    pub device : *mut gdk::Device,
+    pub x_root : f64,
+    pub y_root : f64
 }
 
 impl Event for EventMotion {}
@@ -138,15 +138,15 @@ pub struct EventButton {
     pub window : *mut gdk::Window,
     send_event : i8,
 
-    time : u32,
-    x : f64,
-    y : f64,
-    axes : *mut f64,
-    state : gdk::enums::modifier_type::ModifierType,
-    button : u32,
-    device : *mut gdk::Device,
-    x_root : f64,
-    y_root : f64
+    pub time : u32,
+    pub x : f64,
+    pub y : f64,
+    pub axes : *mut f64,
+    pub state : gdk::enums::modifier_type::ModifierType,
+    pub button : u32,
+    pub device : *mut gdk::Device,
+    pub x_root : f64,
+    pub y_root : f64
 }
 
 impl Event for EventButton {}
